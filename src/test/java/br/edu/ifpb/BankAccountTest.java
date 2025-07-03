@@ -8,6 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BankAccountTest {
@@ -16,13 +18,29 @@ class BankAccountTest {
 
     @BeforeEach
     void setUp() {
-        this.bankAccount = new BankAccount(100);
+        this.bankAccount = new BankAccount(BigDecimal.valueOf(100));
     }
 
     @Test
     @DisplayName("Deve retornar o saldo inicial de 100R$")
     void initialBalanceShouldBe100() {
-        assertEquals(100, bankAccount.getBalance());
+        assertEquals(BigDecimal.valueOf(100), bankAccount.getBalance());
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {100, 100.1, 101, 110, 130, 200, 500, 1000, 1000000})
+    @DisplayName("Deve permitir a criação da conta com saldo maior ou igual a 100R$")
+    void shouldCreateAccountWithValidAmount(double amount) {
+
+        BankAccount account = new BankAccount(BigDecimal.valueOf(amount));
+        assertEquals(BigDecimal.valueOf(amount), account.getBalance());
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {99.9,99.99999,90,80,1,0.1,0,0.00001, -10, -100, -1000})
+    @DisplayName("Deve lançar uma IllegalArgumentException quando o saldo inicial for menor que 100R$")
+    void shouldThrowIllegalArgumentExceptionWhenBalanceLessThan100R(double amount) {
+        assertThrows(IllegalArgumentException.class, () -> {new BankAccount(BigDecimal.valueOf(amount));});
     }
 
     @Nested
@@ -38,15 +56,15 @@ class BankAccountTest {
         })
         @DisplayName("Deve aumentar o saldo para os valores esperados")
         void depositShouldIncreaseBalanceToExpected(double amount, double expected) {
-            bankAccount.deposit(amount);
-            assertEquals(expected, bankAccount.getBalance());
+            bankAccount.deposit(BigDecimal.valueOf(amount));
+            assertEquals(BigDecimal.valueOf(expected), bankAccount.getBalance());
         }
 
         @ParameterizedTest
         @ValueSource(doubles = {-10.1,-1.1,0.0})
         @DisplayName("Deve lançar uma IllegalArgumentException para valores menores ou igual a zero")
         void depositShouldThrowExceptionWhenAmountLessOrEqualToZero(double value) {
-            assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(value));
+            assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(BigDecimal.valueOf(value)));
         }
 
     }
@@ -59,14 +77,14 @@ class BankAccountTest {
         @ValueSource(doubles = {-1000.2, -100.2, -10.1, 0.00})
         @DisplayName("Deve lançar uma exceção do tipo IllegalArgumentException com valores menores ou igual a zero")
         void withdrawShouldThrowIllegalArgumentExceptionWhenAmountLessThanOrEqualsToZero(double value) {
-            assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(value));
+            assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(BigDecimal.valueOf(value)));
         }
 
         @ParameterizedTest
         @ValueSource(doubles = {100.00001,100.1,101,102,200,300,4000})
         @DisplayName("Deve lançar uma exceção do tipo IllegalArgumentException com valores de saque maiores que o saldo atual de 100R$")
         void withdrawShouldThrowIllegalArgumentExceptionWhenValueGreaterThanBalance(double value){
-            assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(value));
+            assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(BigDecimal.valueOf(value)));
         }
 
         @ParameterizedTest
@@ -81,8 +99,8 @@ class BankAccountTest {
         })
         @DisplayName("Deve permitir o saque de valores válidos")
         void withdrawShouldDecreaseBalance(double amount, double expected) {
-            bankAccount.withdraw(amount);
-            assertEquals(expected, bankAccount.getBalance());
+            bankAccount.withdraw(BigDecimal.valueOf(amount));
+            assertEquals(BigDecimal.valueOf(expected), bankAccount.getBalance());
         }
     }
 

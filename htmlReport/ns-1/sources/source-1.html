@@ -1,0 +1,159 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > BankAccount</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.edu.ifpb</a>
+</div>
+
+<h1>Coverage Summary for Class: BankAccount (br.edu.ifpb)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BankAccount</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    78,6%
+  </span>
+  <span class="absValue">
+    (11/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82,4%
+  </span>
+  <span class="absValue">
+    (14/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.edu.ifpb;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;
+&nbsp;public class BankAccount {
+&nbsp;
+&nbsp;    private BigDecimal balance;
+&nbsp;
+<b class="fc">&nbsp;    BankAccount(BigDecimal balance) {</b>
+<b class="pc">&nbsp;        if (balance == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Initial balance must be at least 100&quot;);</b>
+&nbsp;
+&nbsp;        }
+<b class="fc">&nbsp;        if(balance.compareTo(BigDecimal.valueOf(100)) &lt; 0) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Balance cannot less than 100&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.balance = balance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public BigDecimal getBalance() {
+<b class="fc">&nbsp;        return this.balance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deposit(BigDecimal amount) {
+<b class="pc">&nbsp;        if (amount == null) {</b>
+<b class="nc">&nbsp;            throw new NullPointerException(&quot;Deposit amount cannot be null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (amount.compareTo(BigDecimal.ZERO) &lt;= 0) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Amount must be greater than 0&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.balance = balance.add(amount);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void withdraw(BigDecimal amount) {
+<b class="pc">&nbsp;        if (amount == null) {</b>
+<b class="nc">&nbsp;            throw new NullPointerException(&quot;Withdrawal amount cannot be null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(amount.compareTo(BigDecimal.ZERO) &lt;= 0 || amount.compareTo(this.balance) &gt; 0) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Amount must be greater than zero&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.balance = balance.subtract(amount);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-07-03 18:21</div>
+</div>
+</body>
+</html>
