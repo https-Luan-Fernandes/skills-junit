@@ -27,20 +27,31 @@ class BankAccountTest {
         assertEquals(BigDecimal.valueOf(100), bankAccount.getBalance());
     }
 
-    @ParameterizedTest
-    @ValueSource(doubles = {100, 100.1, 101, 110, 130, 200, 500, 1000, 1000000})
-    @DisplayName("Deve permitir a criação da conta com saldo maior ou igual a 100R$")
-    void shouldCreateAccountWithValidAmount(double amount) {
+    @Nested
+    @DisplayName("Testes do Construtor")
+    class ConstrutorTest {
 
-        BankAccount account = new BankAccount(BigDecimal.valueOf(amount));
-        assertEquals(BigDecimal.valueOf(amount), account.getBalance());
-    }
+        @ParameterizedTest
+        @ValueSource(doubles = {100, 100.1, 101, 110, 130, 200, 500, 1000, 1000000})
+        @DisplayName("Deve permitir a criação da conta com saldo maior ou igual a 100R$")
+        void shouldCreateAccountWithValidAmount(double amount) {
 
-    @ParameterizedTest
-    @ValueSource(doubles = {99.9,99.99999,90,80,1,0.1,0,0.00001, -10, -100, -1000})
-    @DisplayName("Deve lançar uma IllegalArgumentException quando o saldo inicial for menor que 100R$")
-    void shouldThrowIllegalArgumentExceptionWhenBalanceLessThan100R(double amount) {
-        assertThrows(IllegalArgumentException.class, () -> {new BankAccount(BigDecimal.valueOf(amount));});
+            BankAccount account = new BankAccount(BigDecimal.valueOf(amount));
+            assertEquals(BigDecimal.valueOf(amount), account.getBalance());
+        }
+
+        @ParameterizedTest
+        @ValueSource(doubles = {99.9,99.99999,90,80,1,0.1,0,0.00001, -10, -100, -1000})
+        @DisplayName("Deve lançar uma IllegalArgumentException quando o saldo inicial for menor que 100R$")
+        void shouldThrowIllegalArgumentExceptionWhenBalanceLessThan100R(double amount) {
+            assertThrows(IllegalArgumentException.class, () -> {new BankAccount(BigDecimal.valueOf(amount));});
+        }
+
+        @Test
+        @DisplayName("Deve lançar uma IllegalArgumentException quando o argumento do construtor for null")
+        void shouldThrowIllegalArgumentExceptionWhenArgumentoIsNull() {
+            assertThrows(IllegalArgumentException.class, () -> {new BankAccount(null);});
+        }
     }
 
     @Nested
@@ -66,6 +77,13 @@ class BankAccountTest {
         void depositShouldThrowExceptionWhenAmountLessOrEqualToZero(double value) {
             assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(BigDecimal.valueOf(value)));
         }
+
+        @Test
+        @DisplayName("Deve lançar NullPointerException quando o argumento do parametro de depósito for null")
+        void shouldThrowNullPointerExceptionWhenArgumentoIsNull() {
+            assertThrows(NullPointerException.class, () -> {bankAccount.deposit(null);});
+        }
+
 
     }
 
@@ -101,6 +119,12 @@ class BankAccountTest {
         void withdrawShouldDecreaseBalance(double amount, double expected) {
             bankAccount.withdraw(BigDecimal.valueOf(amount));
             assertEquals(BigDecimal.valueOf(expected), bankAccount.getBalance());
+        }
+
+        @Test
+        @DisplayName("Deve lançar uma exceção do tipo NullPointerException quando o argumento do parametro de saque for null")
+        void withdrawShouldThrowNullPointerExceptionWhenArgumentoIsNull() {
+            assertThrows(NullPointerException.class, () -> bankAccount.withdraw(null));
         }
     }
 

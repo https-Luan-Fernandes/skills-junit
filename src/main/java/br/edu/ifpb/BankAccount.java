@@ -9,7 +9,6 @@ public class BankAccount {
     BankAccount(BigDecimal balance) {
         if (balance == null) {
             throw new IllegalArgumentException("Initial balance must be at least 100");
-
         }
         if(balance.compareTo(BigDecimal.valueOf(100)) < 0) {
             throw new IllegalArgumentException("Balance cannot less than 100");
